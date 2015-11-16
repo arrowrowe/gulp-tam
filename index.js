@@ -4,15 +4,18 @@ var GT = {
   load: function (assetsPath) {
     return {
       assetsPath: assetsPath,
-      assets: GT.tam.read(assetsPath),
+      assets: GT.getAssets(assetsPath),
       clean: GT.tasks.clean,
       build: GT.tasks.build,
       watch: GT.tasks.watch
     };
   },
+  getAssets: function (assetsPath) {
+    return GT.tam.fillAssets(GT.tam.read(assetsPath), {});
+  },
   tasks: {
     clean: function () {
-      var dist = this.assets.dist || 'dist';
+      var dist = this.assets.dist;
       GT.tam.log.info('Remove dist folder [%s]', dist);
       fs.removeSync(dist);
     },
@@ -23,16 +26,15 @@ var GT = {
     },
     watch: function () {
       var that = this;
-      var src = this.assets.src || 'src';
       var assetsPathReal = fs.realpathSync(this.assetsPath);
 
       GT.gulp.watch([
         this.assetsPath,
-        src + '/**/*'
+        this.assets.src + '/**/*'
       ], function (event) {
         GT.tam.log.trace('File [%s] was "%s".', event.path, event.type);
         if (assetsPathReal === fs.realpathSync(event.path)) {
-          that.assets = GT.tam.read(that.assetsPath);
+          that.assets = GT.getAssets(that.assetsPath);
           that.build();
         } else {
           rebuild(event.path);
