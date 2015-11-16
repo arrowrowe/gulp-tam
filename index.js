@@ -28,23 +28,56 @@ var GT = {
       var that = this;
       var assetsPathReal = fs.realpathSync(this.assetsPath);
 
+      var report;
+      var linked;
+      rebuildAll();
+
       GT.gulp.watch([
         this.assetsPath,
         this.assets.src + '/**/*'
       ], function (event) {
         GT.tam.log.trace('File [%s] was "%s".', event.path, event.type);
-        if (assetsPathReal === fs.realpathSync(event.path)) {
+        if (event.type === 'deleted') {
+          return;
+        }
+        if (assetsPathReal === event.path) {
           that.assets = GT.getAssets(that.assetsPath);
-          that.build();
+          rebuildAll();
         } else {
-          rebuild(event.path);
+          rebuildOne(event.path);
         }
       });
 
-      function rebuild(file) {
-        // TODO: rebuild necessary commands and relink.
-        GT.tam.log.info('File [%s] needs rebuilding.', file);
+      function rebuildAll() {
+        report = GT.tam.build(GT.tam.prepare(that.assets));
+        linked = GT.tam.link(report, that.assets.www);
+        fs.writeFileSync(that.assets.linked, JSON.stringify(linked));
       }
+
+      function rebuildOne(file) {
+
+        GT.tam.log.info('File [%s] needs rebuilding.', file);
+        if (forInCommands(function (command) {
+          // TODO: rebuild this command
+          console.log('Related command:', command);
+        }) === 0) {
+          GT.tam.log.info('No commands related found.');
+        }
+
+        function forInCommands(fn) {
+          var i = 0;
+          for (var pkgName in report) {
+            report[pkgName].commands.forEach(function (command) {
+              if (command.files.indexOf(file) >= 0) {
+                i++;
+                fn(command);
+              }
+            });
+          }
+          return i;
+        }
+      }
+
     }
   }
 };
