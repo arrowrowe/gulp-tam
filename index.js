@@ -57,12 +57,17 @@ var GT = {
       function rebuildOne(file) {
 
         GT.tam.log.info('File [%s] needs rebuilding.', file);
-        if (forInCommands(function (command) {
-          // TODO: rebuild this command
-          console.log('Related command:', command);
+        if (forInCommands(function (command, pkgName) {
+          var pkg = that.assets.packages[pkgName];
+          pkg.name = pkgName;
+          GT.tam.namer(that.assets, pkg)(command);
+          GT.tam.worker.perform(command);
         }) === 0) {
           GT.tam.log.info('No commands related found.');
+          return;
         }
+        linked = GT.tam.link(report, that.assets.www);
+        fs.writeFileSync(that.assets.linked, JSON.stringify(linked));
 
         function forInCommands(fn) {
           var i = 0;
@@ -70,7 +75,7 @@ var GT = {
             report[pkgName].commands.forEach(function (command) {
               if (command.files.indexOf(file) >= 0) {
                 i++;
-                fn(command);
+                fn(command, pkgName);
               }
             });
           }
