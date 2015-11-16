@@ -1,0 +1,31 @@
+{
+  "name": "gulp-tam",
+  "version": "0.0.1",
+  "description": "Gulp integration for Tam.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "cs": "jscs --verbose .",
+    "check": "npm run lint && npm run cs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arrowrowe/gulp-tam.git"
+  },
+  "keywords": [
+    "Tam"
+  ],
+  "author": "arrowrowe <arrowrowe@gmail.com> (https://github.com/arrowrowe)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arrowrowe/gulp-tam/issues"
+  },
+  "homepage": "https://github.com/arrowrowe/gulp-tam#readme",
+  "devDependencies": {
+    "eslint": "1.9.0",
+    "jscs": "2.5.1"
+  },
+  "dependencies": {
+    "gulp-replace": "0.5.4"
+  }
+}
