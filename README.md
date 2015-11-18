@@ -1,6 +1,13 @@
 # GulpTam
 
-> Gulp integration for [Tam][1].
+[![npm-version][npm-badge]][npm-url]
+
+[npm-badge]: https://img.shields.io/npm/v/gulp-tam.svg
+[npm-url]: https://www.npmjs.com/package/gulp-tam
+
+> Gulp integration for [Tam][tam-url].
+
+[tam-url]: https://github.com/arrowrowe/tam
 
 # Install
 
@@ -26,5 +33,3 @@ var GulpTam = require('gulp-tam')(gulp, tam);
 var gulpTamFrontStage = GulpTam('./assets-frontstage.json');
 var gulpTamBackStage = GulpTam('./assets-backstage.json');
 ```
-
-[1]: https://github.com/arrowrowe/tam
