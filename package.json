@@ -26,7 +26,6 @@
     "jscs": "2.5.1"
   },
   "dependencies": {
-    "fs-extra": "0.26.2",
-    "gulp-replace": "0.5.4"
+    "fs-extra": "0.26.2"
   }
 }
