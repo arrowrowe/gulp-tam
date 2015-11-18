@@ -1,6 +1,6 @@
 {
   "name": "gulp-tam",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Gulp integration for Tam.",
   "main": "index.js",
   "scripts": {
